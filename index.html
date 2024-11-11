@@ -96,6 +96,8 @@
 
                 const table = new DataTable('#table')
                 storeTable = []
+
+                $(`#endNum`).val(getRandomInt(store.length) + 1)
             })
 
             $.get(urlGift, function (data) {
@@ -132,9 +134,15 @@
                         }
 
                         console.table(storeTable)
+
+                        $(`#endNum`).val(getRandomInt(store.length) + 1)
                     },
                 })
             })
+
+            function getRandomInt(max) {
+                return Math.floor(Math.random() * max)
+            }
         </script>
     </body>
 </html>
