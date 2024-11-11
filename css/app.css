@@ -10,23 +10,30 @@ body {
     /* height: 200px; */
 }
 .slotwrapper ul {
-    padding: 0;
-    margin: 0.5%;
     list-style: none;
     position: relative;
     float: left;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
 }
 .slotwrapper ul {
-    width: 32.3%;
+    padding: 0;
+    margin: 1%;
+    width: 31.3%;
     height: 40dvh;
     font-size: 5dvh;
     line-height: 40dvh;
     text-align: center;
 }
+
+.slotwrapper ul li {
+    /* background-color: aquamarine; */
+    width: 100%;
+    height: 99%;
+}
+
 .slotwrapper ul li img {
     vertical-align: top;
 }

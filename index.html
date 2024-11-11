@@ -12,37 +12,40 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"
         />
-        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" />
         <link
+            href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/af-2.7.0/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/cr-2.0.4/date-1.5.4/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-2.1.0/sr-1.4.1/datatables.min.css"
+            rel="stylesheet"
+        />
+        <!-- <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
-        />
+        /> -->
         <link rel="stylesheet" href="css/app.css" />
     </head>
 
     <body>
-        <div class="container bg-light bg-gradient">
+        <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <select name="" id="selectGift"></select>
+                    <select name="" class="form-select form-select-lg" id="selectGift"></select>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-12">
                     <div class="slotwrapper" id="example"></div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-6">
-                    <input type="text" class="form-control" id="endNum" value="7" disabled/>
+            <div class="row mt-3">
+                <div class="col-12 mb-3">
+                    <button type="button" class="btn btn-success btn-lg w-100" id="btn-example">Start Spin!</button>
                 </div>
-                <div class="col-6">
-                    <button type="button" class="btn btn-success btn-sm" id="btn-example">Start Spin!</button>
+                <div class="col-12">
+                    <input type="text" class="form-control" id="endNum" value="7" disabled />
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-12">
-                    <table id="table" class="table-hover table table-sm">
+                    <table id="table" class="table table-sm table-hover">
                         <thead>
                             <tr>
                                 <th>獎項</th>
@@ -64,10 +67,11 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"
         ></script>
-        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/af-2.7.0/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/cr-2.0.4/date-1.5.4/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-2.1.0/sr-1.4.1/datatables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-zh_tw.min.js"></script> -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> -->
         <script src="js/slotmachine.js"></script>
 
         <script type="text/javascript">
@@ -78,26 +82,31 @@
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${excel_id}/values/${sheet0}?alt=json&key=${api_key}`
             const urlGift = `https://sheets.googleapis.com/v4/spreadsheets/${excel_id}/values/${sheet1}?alt=json&key=${api_key}`
             const arr = [0, 1, 2]
-            var store, storeTable
+            var store
+            var storeTable = []
+
             $.get(url, function (data) {
+                store = data.values
+                console.table(store)
                 arr.forEach((x) => {
-                    const ul = $(`<ul class="shadow-sm"></ul>`)
-                    store = data.values
+                    const ul = $(`<ul></ul>`)
+
                     data.values.forEach((x, index) => {
-                        ul.append(
-                            `<li>
-                                ${x[0]}
-                            </li>`
-                        )
+                        ul.append(`<li class="bg-light shadow-sm">${x[0]}</li>`)
                     })
 
                     $(`#example`).append(ul)
                 })
 
-                const table = new DataTable('#table')
-                storeTable = []
+                const table = new DataTable('#table', {
+                    layout: {
+                        topStart: {
+                            buttons: ['csv', 'excel'],
+                        },
+                    },
+                })
 
-                $(`#endNum`).val(getRandomInt(store.length) + 1)
+                // $(`#endNum`).val(getRandomInt(store.length) + 1)
             })
 
             $.get(urlGift, function (data) {
@@ -105,43 +114,43 @@
                 data.values.forEach((x, index) => {
                     $(`#selectGift`).append(`<option>${x[0]}</option>`)
                 })
-
-                // $(`#selectGift`).selectpicker()
             })
 
+            var temp
             $('#btn-example').click(function () {
-                const num = $(`#endNum`).val()
+                temp = []
+                const num = getRandomInt(store.length)
+                $(`#endNum`).val(num)
                 $('#example ul').playSpin({
                     stopSeq: 'leftToRight',
                     time: 500,
                     // easing: 'easeOutBack',
                     endNum: [num, num, num],
                     onEnd: function (num) {
-                        // console.log(num)
+                        temp.push(num)
+                        console.log(num)
+                        console.log(temp)
                     },
                     onFinish: function (num) {
-                        const data = store[num[0]]
-                        console.log(data)
-                        Swal.fire(`${data[0]}, ${data[1]}, ${data[2]}`)
-                        const table = new DataTable('#table')
+                        console.log(num)
+                        const data = store[temp[0] - 1]
+                        const obj = [$(`#selectGift`).val(), data[0], data[1], data[2]]
+                        console.table(obj)
+                        Swal.fire(`${obj[0]} ${obj[1]}, ${obj[2]}, ${obj[3]}`)
 
-                        if (storeTable.find((x) => x[0] === data[0])) {
-                            console.log(`重複!`)
+                        if (storeTable.find((x) => x[1] === obj[1])) {
                             Swal.fire('重複!')
                         } else {
-                            storeTable.push(data)
-                            table.row.add([$(`#selectGift`).val(), data[0], data[1], data[2]]).draw(false)
+                            storeTable.push(obj)
+                            const table = new DataTable('#table')
+                            table.row.add(obj).draw(false)
                         }
-
-                        console.table(storeTable)
-
-                        $(`#endNum`).val(getRandomInt(store.length) + 1)
                     },
                 })
             })
 
-            function getRandomInt(max) {
-                return Math.floor(Math.random() * max)
+            function getRandomInt(x) {
+                return Math.floor(Math.random() * x) + 1
             }
         </script>
     </body>
