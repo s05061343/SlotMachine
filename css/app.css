@@ -3,7 +3,8 @@
 } */
 
 body {
-    background: radial-gradient(ellipse at center, #443501 0%, #000000 100%);
+    /* background: radial-gradient(ellipse at center, #443501 0%, #000000 100%); */
+    background: radial-gradient(ellipse at center, #47059e 0%, #000000 100%);
 }
 
 .slotwrapper {
