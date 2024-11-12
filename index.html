@@ -20,42 +20,67 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
         /> -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css"
+            integrity="sha384-NvKbDTEnL+A8F/AA5Tc5kmMLSJHUO868P+lDtTpJIeQdGYaUIuLr4lVGOEA1OcMy"
+            crossorigin="anonymous"
+        />
         <link rel="stylesheet" href="css/app.css" />
     </head>
 
     <body>
-        <div class="container">
+        <div class="container p-5">
             <div class="row">
                 <div class="col-12">
-                    <select name="" class="form-select form-select-lg" id="selectGift"></select>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <select name="" class="form-select form-select-lg" id="selectGift"></select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <div class="slotwrapper" id="example"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <button type="button" class="btn btn-danger btn-lg w-100" id="btn-example">
+                                            Start Spin!
+                                        </button>
+                                    </div>
+                                    <div class="col-12 d-none">
+                                        <input type="text" class="form-control" id="endNum" value="7" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-12">
-                    <div class="slotwrapper" id="example"></div>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12 mb-3">
-                    <button type="button" class="btn btn-success btn-lg w-100" id="btn-example">Start Spin!</button>
-                </div>
-                <div class="col-12">
-                    <input type="text" class="form-control" id="endNum" value="7" disabled />
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <table id="table" class="table table-sm table-hover">
-                        <thead>
-                            <tr>
-                                <th>獎項</th>
-                                <th>部門</th>
-                                <th>工號</th>
-                                <th>姓名</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <table id="table" class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>獎項</th>
+                                        <th>部門</th>
+                                        <th>工號</th>
+                                        <th>姓名</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,6 +97,7 @@
         <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.1.8/af-2.7.0/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/cr-2.0.4/date-1.5.4/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-2.1.0/sr-1.4.1/datatables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> -->
+        <script src="./lib/fontawesome/js/all.js"></script>
         <script src="js/slotmachine.js"></script>
 
         <script type="text/javascript">
@@ -105,8 +131,6 @@
                         },
                     },
                 })
-
-                // $(`#endNum`).val(getRandomInt(store.length) + 1)
             })
 
             $.get(urlGift, function (data) {
@@ -128,15 +152,31 @@
                     endNum: [num, num, num],
                     onEnd: function (num) {
                         temp.push(num)
-                        console.log(num)
                         console.log(temp)
                     },
                     onFinish: function (num) {
                         console.log(num)
                         const data = store[temp[0] - 1]
-                        const obj = [$(`#selectGift`).val(), data[0], data[1], data[2]]
+                        const obj = [
+                            $(`#selectGift`).val(),
+                            data[0],
+                            data[1],
+                            data[2],
+                            `<a index="${temp[0] - 1}" data-id="${data[0]}">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>`,
+                        ]
                         console.table(obj)
-                        Swal.fire(`${obj[0]} ${obj[1]}, ${obj[2]}, ${obj[3]}`)
+                        // Swal.fire(`${obj[0]} ${obj[1]}, ${obj[2]}, ${obj[3]}`)
+                        Swal.fire({
+                            title: 'Sweet!',
+                            text: 'Modal with a custom image.',
+                            // imageUrl: 'https://unsplash.it/400/200',
+                            imageUrl: './img/main.png',
+                            imageWidth: 240,
+                            imageHeight: 240,
+                            imageAlt: 'Custom image',
+                        })
 
                         if (storeTable.find((x) => x[1] === obj[1])) {
                             Swal.fire('重複!')
@@ -146,6 +186,23 @@
                             table.row.add(obj).draw(false)
                         }
                     },
+                })
+            })
+
+            $('#table').on('click', 'tbody tr td a', function () {
+                const id = $(this).attr('data-id')
+                const data = storeTable.find((x) => x[1] === id)
+                const obj = $(this);
+                Swal.fire({
+                    title: '確定刪除?',
+                    text: `${data[0]} ${data[1]}, ${data[2]} ${data[3]}`,
+                    icon: 'question',
+                    showConfirmButton: true,
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        const table = new DataTable('#table')
+                        table.row(obj.parents('tr')).remove().draw()
+                    }
                 })
             })
 
