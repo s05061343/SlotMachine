@@ -31,26 +31,35 @@
 
     <body>
         <div class="container">
-            <div class="row" style="height: 90dvh">
+            <div class="row" style="height: 100dvh">
                 <div class="col-12 d-flex flex-column justify-content-center align-items-center">
                     <div class="card shadow-sm bg-gold w-75 border-0">
                         <div class="card-body">
                             <div class="container">
                                 <div class="row mb-3">
                                     <div class="col-12">
-                                        <select name="" class="form-select form-select-lg" id="selectGift"></select>
+                                        <select
+                                            name=""
+                                            class="form-select form-select-lg shadow-sm"
+                                            id="selectGift"
+                                        ></select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="card shadow-sm p-0 border-0">
-                                        <div class="card-body bg-red rounded p-0">
+                                        <div class="card-body bg-red rounded p-0 shadow-sm">
                                             <div class="slotwrapper" id="example"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12 p-3">
-                                        <button type="button" class="btn metallic-button btn-lg w-100" style="height: 5dvh;" id="btn-example">
+                                        <button
+                                            type="button"
+                                            class="btn metallic-button btn-lg w-100"
+                                            style="height: 5dvh"
+                                            id="btn-example"
+                                        >
                                             Start Spin!
                                         </button>
                                     </div>
@@ -208,6 +217,8 @@
                     if (result.isConfirmed) {
                         const table = new DataTable('#table')
                         table.row(obj.parents('tr')).remove().draw()
+                        storeTable = storeTable.filter((x) => x !== data)
+                        console.table(storeTable)
                     }
                 })
             })
