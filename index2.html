@@ -27,20 +27,15 @@
 
     <body>
         <div class="container">
-            <div class="row" style="height: 100dvh">
+            <div class="row d-flex flex-column justify-content-center align-items-center" style="height: 100dvh">
+                <div class="col-12 d-flex flex-row justify-content-center align-items-center mb-5">
+                    <select name="" class="form-select form-select-lg shadow-sm w-75" id="selectGift"></select>
+                </div>
                 <div class="col-12 d-flex flex-row justify-content-center align-items-center">
                     <div class="card shadow-sm bg-gold w-75 border-0">
                         <div class="card-body">
                             <div class="container">
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <select
-                                            name=""
-                                            class="form-select form-select-lg shadow-sm"
-                                            id="selectGift"
-                                        ></select>
-                                    </div>
-                                </div>
+                                <div class="row mb-3"></div>
                                 <div class="row mb-3">
                                     <div class="card shadow-sm p-0 border-0">
                                         <div class="card-body bg-red rounded p-0 shadow-sm">
@@ -49,23 +44,15 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12 p-3">
-                                        <button
-                                            type="button"
-                                            class="btn metallic-button btn-lg w-100"
-                                            style="height: 5dvh"
-                                            id="btn-example"
-                                        >
-                                            Start Spin!
-                                        </button>
-                                    </div>
                                     <div class="col-12 d-none">
                                         <input type="text" class="form-control" id="endNum" value="7" disabled />
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12"></div>
-                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-12">
+                                        <label for="" id="lblBox"></label>
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -147,6 +134,9 @@
                             <ellipse id="head" cx="22.9" cy="11.3" rx="11.2" ry="11.3" fill="url(#radial-gradient)" />
                         </svg>
                     </div>
+                </div>
+                <div class="col-12 d-flex flex-row justify-content-center align-items-center">
+                    <label for="" id="lblBox"></label>
                 </div>
             </div>
             <div class="row my-3">
@@ -299,15 +289,19 @@
                         ]
                         console.table(obj)
                         // Swal.fire(`${obj[0]} ${obj[1]}, ${obj[2]}, ${obj[3]}`)
-                        Swal.fire({
-                            title: `${obj[0]}`,
-                            text: `${obj[0]} ${obj[1]}, ${obj[2]}, ${obj[3]}`,
-                            // imageUrl: 'https://unsplash.it/400/200',
-                            imageUrl: './img/main.png',
-                            imageWidth: 240,
-                            imageHeight: 240,
-                            imageAlt: 'Custom image',
-                        })
+                        // Swal.fire({
+                        //     title: `${obj[0]}`,
+                        //     text: `${obj[0]} ${obj[1]}, ${obj[2]}, ${obj[3]}`,
+                        //     // imageUrl: 'https://unsplash.it/400/200',
+                        //     imageUrl: './img/main.png',
+                        //     imageWidth: 240,
+                        //     imageHeight: 240,
+                        //     imageAlt: 'Custom image',
+                        // })
+
+                        const lblBox = $(`#lblBox`)
+                        lblBox.empty()
+                        lblBox.append(`${obj[0]} ${obj[1]}, ${obj[2]}, ${obj[3]}`)
 
                         if (storeTable.find((x) => x[1] === obj[1])) {
                             Swal.fire('重複!')
